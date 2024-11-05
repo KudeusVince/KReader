@@ -13,6 +13,7 @@ let package = Package(
             targets: ["KReader"]),
     ],
     dependencies: [
+        .package(path: "../../KModel"),
         .package(path: "../../FormBuilder")
     ],
     targets: [
@@ -21,6 +22,7 @@ let package = Package(
         .target(
             name: "KReader",
             dependencies: [
+                .product(name: "KModel", package: "KModel"),
                 .product(name: "FormBuilder", package: "FormBuilder")
             ],
             resources: [.process("Resources")]
