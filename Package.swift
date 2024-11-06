@@ -14,6 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../KModel"),
+        .package(path: "../../BLEReaderUtility"),
         .package(path: "../../FormBuilder")
     ],
     targets: [
@@ -23,6 +24,7 @@ let package = Package(
             name: "KReader",
             dependencies: [
                 .product(name: "KModel", package: "KModel"),
+                .product(name: "BLEReaderUtility", package: "BLEReaderUtility"),
                 .product(name: "FormBuilder", package: "FormBuilder")
             ],
             resources: [.process("Resources")]
