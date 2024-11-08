@@ -17,10 +17,22 @@ class DeskReader {
     
     private var dispatchGroup: DispatchGroup?
     
-    var characteristicManager: CharacteristicManager
+    private var characteristicManager: CharacteristicManager
     
     init(peripheral: CBPeripheral) {
         self.characteristicManager = CharacteristicManager(peripheral: peripheral)
+    }
+    
+    func load(_ serviceCharacteristics: ServiceCharacteristics) {
+        characteristicManager.serviceCharacteristics  = serviceCharacteristics
+    }
+    
+    func getValues (_ bleReaderProperties:BLEReaderProperties) {
+        characteristicManager.readValue(bleReaderProperties)
+    }
+    
+    func setValues (_ characteristicTypeSetter: CharacteristicTypeSetter) {
+        characteristicManager.setValue(characteristicTypeSetter)
     }
     
     func readValues(_ completion: @escaping (ReaderSettings)->()) {

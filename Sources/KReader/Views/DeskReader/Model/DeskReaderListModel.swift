@@ -29,7 +29,7 @@ class DeskReaderListModel {
     init(services: [CBUUID]) {
         self.readerBLEManager = ReaderBLEManager(services: services)
         self.readerBLEManager.delegate = self
-        self.readerBLEManager.start()
+//        self.readerBLEManager.start()
     }
     
     private func connect(to cbPeripheral:CBPeripheral) {

@@ -37,19 +37,19 @@ class DeskReaderManager {
     }
     
     public func characteristicReader(_ bleReaderProperties:BLEReaderProperties) {
-        deskReader.characteristicManager.readValue(bleReaderProperties)
+        deskReader.getValues(bleReaderProperties)
     }
     
-    public func characteristicSetter(_ characteristicTypeSetter:CharacteristicTypeSetter) {
-        deskReader.characteristicManager.setValue(characteristicTypeSetter)
+    public func characteristicSetter(_ characteristicTypeSetter: CharacteristicTypeSetter) {
+        deskReader.setValues(characteristicTypeSetter)
     }
 }
 
 extension DeskReaderManager: ServiceBTReaderDelegate {
     
-    public func serviceCharacteristicsUpdated(_ serviceCharacteristics: BLEReaderUtility.ServiceCharacteristics) {
-        deskReader.characteristicManager.serviceCharacteristics  = serviceCharacteristics
-        characteristicSetter(.password(password))
+    public func serviceCharacteristicsUpdated(_ serviceCharacteristics: ServiceCharacteristics) {
+        deskReader.load(serviceCharacteristics)
+        deskReader.setValues(.password(password))
     }
     
     public func didUpdateValueFor(_ characteristic: CBCharacteristic) {
