@@ -43,15 +43,15 @@ struct EditReaderView: View {
                 .expandSection()
                 
                 Section(BLEReaderProperties.brightness.title) {
-                    SliderView(progress: $readerSettings.brightness, icon: "lightbulb.max.fill")
+                    CompactSliderView(value: $readerSettings.brightness, image:"lightbulb.max.fill", text: "%") //MAX_BRIGHTNESS
                         .onChange(of: readerSettings.brightness) { _, brightness in
-                            deskReaderManager.characteristicSetter(.brightness(Int(brightness*MAX_BRIGHTNESS)))
+                            deskReaderManager.characteristicSetter(.brightness(Int((brightness*MAX_BRIGHTNESS)/100)))
                         }
                 }
                 .expandSection()
                 
                 Section(BLEReaderProperties.duration.title) {
-                    CompactSliderView(value: $readerSettings.duration, max: MAX_GLOWING_DURATION, step: 1.0)
+                    CompactSliderView(value: $readerSettings.duration, image:"timer", text: "sec", max: MAX_GLOWING_DURATION) //MAX_GLOWING_DURATION
                         .onChange(of: readerSettings.duration) { _, duration in
                             deskReaderManager.characteristicSetter(.duration(Int(duration)))
                         }
@@ -59,7 +59,7 @@ struct EditReaderView: View {
                 .expandSection()
                 
                 Section(BLEReaderProperties.delay.title) {
-                    CompactSliderView(value: $readerSettings.delay, max: MAX_CYCLE_DELAY, step: 1.0)
+                    CompactSliderView(value: $readerSettings.delay, image:"shuffle", text: "sec", max: MAX_CYCLE_DELAY)//MAX_CYCLE_DELAY
                         .onChange(of: readerSettings.delay) { _, delay in
                             deskReaderManager.characteristicSetter(.delay(Int(delay)))
                         }

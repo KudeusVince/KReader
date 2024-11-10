@@ -9,7 +9,6 @@ import CoreBluetooth
 import BLEReaderUtility
 import Combine
 
-@MainActor
 @Observable
 class DeskReaderManager {
     
@@ -24,7 +23,7 @@ class DeskReaderManager {
     
     init(password: String, peripheral: CBPeripheral, services:[CBUUID]) {
         self.password = password
-        self.deskReader = DeskReader(peripheral: peripheral)
+        self.deskReader = DeskReader(peripheral: peripheral, properties: [.mode, .color, .brightness, .duration, .delay])
         self.readerPeripheralService.delegate = self
         peripheral.delegate = readerPeripheralService
         peripheral.discoverServices(services)
@@ -63,9 +62,7 @@ extension DeskReaderManager: ServiceBTReaderDelegate {
                     case .configurationPasswordError:
                         switch blePasswordType {
                         case .defaultConfigPassword:
-                            DispatchQueue.main.async { [self] in
-                                errorPublisher.send(BLEReaderError.configurationPasswordError)
-                            }
+                            errorPublisher.send(BLEReaderError.configurationPasswordError)
                         case .establishmentCustomPassword:
                             blePasswordType = .defaultConfigPassword
                             characteristicSetter(.password(CFGPASSWORD))
@@ -81,17 +78,12 @@ extension DeskReaderManager: ServiceBTReaderDelegate {
                     case .configurationPasswordChange:
                         start()
                     case .commandNotAllowed:
-                        DispatchQueue.main.async { [self] in
-                            errorPublisher.send(BLEReaderError.commandNotAllowed)
-                        }
+                        errorPublisher.send(BLEReaderError.commandNotAllowed)
+                        
                     case .invalidValue:
-                        DispatchQueue.main.async { [self] in
-                            errorPublisher.send(BLEReaderError.commandNotAllowed)
-                        }
+                        errorPublisher.send(BLEReaderError.commandNotAllowed)
                     case .adminPasswordError:
-                        DispatchQueue.main.async { [self] in
-                            errorPublisher.send(BLEReaderError.adminPasswordError)
-                        }
+                        errorPublisher.send(BLEReaderError.adminPasswordError)
                     default: break
                     }
                 }
@@ -111,8 +103,6 @@ extension DeskReaderManager: ServiceBTReaderDelegate {
     }
     
     public func error(_ error: any Error) {
-        DispatchQueue.main.async {
-            self.errorPublisher.send(error)
-        }
+        self.errorPublisher.send(error)
     }
 }

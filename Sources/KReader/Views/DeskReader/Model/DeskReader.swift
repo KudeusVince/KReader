@@ -11,7 +11,7 @@ import BLEReaderUtility
 
 class DeskReader {
     
-    private var properties:[BLEReaderProperties] = [.mode, .color, .brightness, .duration, .delay]
+    private var properties:[BLEReaderProperties]
     
     private var readerSettings = ReaderSettings()
     
@@ -19,8 +19,9 @@ class DeskReader {
     
     private var characteristicManager: CharacteristicManager
     
-    init(peripheral: CBPeripheral) {
+    init(peripheral: CBPeripheral, properties: [BLEReaderProperties]) {
         self.characteristicManager = CharacteristicManager(peripheral: peripheral)
+        self.properties = properties
     }
     
     func load(_ serviceCharacteristics: ServiceCharacteristics) {
@@ -70,7 +71,7 @@ class DeskReader {
                 readerSettings.color = color
             }
         case .brightness:
-            readerSettings.brightness = CGFloat(data.toInt8())/MAX_BRIGHTNESS
+            readerSettings.brightness = ((CGFloat(data.toInt8())/MAX_BRIGHTNESS)*100)
         case .duration:
             readerSettings.duration = CGFloat(data.toInt8())
         case .delay:
