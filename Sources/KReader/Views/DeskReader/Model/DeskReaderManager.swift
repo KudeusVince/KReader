@@ -23,7 +23,7 @@ class DeskReaderManager {
     
     init(password: String, peripheral: CBPeripheral, services:[CBUUID]) {
         self.password = password
-        self.deskReader = DeskReader(peripheral: peripheral, properties: [.mode, .color, .brightness, .duration, .delay])
+        self.deskReader = DeskReader(peripheral: peripheral, properties: [.deviceName, .mode, .color, .brightness, .duration, .delay])
         self.readerPeripheralService.delegate = self
         peripheral.delegate = readerPeripheralService
         peripheral.discoverServices(services)
@@ -87,6 +87,8 @@ extension DeskReaderManager: ServiceBTReaderDelegate {
                     default: break
                     }
                 }
+            case .deviceName:
+                deskReader.received(.deviceName, data: data)
             case .color:
                 deskReader.received(.color, data: data)
             case .neoPxlCycleDelay:

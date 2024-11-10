@@ -41,6 +41,8 @@ class DeskReader {
         for property in properties {
             dispatchGroup?.enter()
             switch property {
+            case .deviceName:
+                characteristicManager.readValue(.deviceName)
             case .mode:
                 characteristicManager.readValue(.mode)
             case .color:
@@ -62,6 +64,10 @@ class DeskReader {
     
     func received(_ bleReaderProperties:BLEReaderProperties, data:Data) {
         switch bleReaderProperties {
+        case .deviceName:
+            if let value = String(data: data, encoding: .utf8) {
+                readerSettings.deviceName = value.isEmpty ? "No name" : value
+            }
         case .mode:
             if let mode = BLEReaderMode(rawValue: Int(data.toInt8())) {
                 readerSettings.mode = mode

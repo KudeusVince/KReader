@@ -66,8 +66,23 @@ struct EditReaderView: View {
                 }
                 .expandSection()
             }
-            .navigationTitle(BLEReaderUI.parameters.title)
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+            .scrollIndicators(.hidden)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("")
             .navigationBarItems(leading: CloseBtn())
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    CustomAlertBtn(alertTitle: BLEReaderProperties.deviceName.title, placeholder: BLEReaderProperties.deviceName.title, action: { deviceName in
+                        readerSettings.deviceName = deviceName
+                        deskReaderManager.characteristicSetter(.deviceName(deviceName))
+                    }) {
+                        Text(readerSettings.deviceName.isEmpty ? BLEReaderUI.parameters.title : readerSettings.deviceName)
+                            .fontWeight(.semibold)
+                            .contentShape(Rectangle())
+                    }
+                }
+            }
         }
     }
     
