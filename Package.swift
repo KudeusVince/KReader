@@ -14,8 +14,8 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../../KModel"),
-        .package(path: "../../BLEReaderUtility"),
-        .package(path: "../../FormBuilder")
+        .package(path: "../../FormBuilder"),
+        .package(path: "../../BLEReaderUtility")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -24,8 +24,8 @@ let package = Package(
             name: "KReader",
             dependencies: [
                 .product(name: "KModel", package: "KModel"),
-                .product(name: "BLEReaderUtility", package: "BLEReaderUtility"),
-                .product(name: "FormBuilder", package: "FormBuilder")
+                .product(name: "FormBuilder", package: "FormBuilder"),
+                .product(name: "BLEReaderUtility", package: "BLEReaderUtility")
             ],
             resources: [.process("Resources")]
         )
